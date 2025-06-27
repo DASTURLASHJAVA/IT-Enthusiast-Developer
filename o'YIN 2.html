@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tanga Uloqtirish (Hisob bilan)</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background: radial-gradient(circle at center, #f7f7f7, #cccccc);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .game-box {
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .choices {
+      margin-bottom: 20px;
+    }
+
+    .choices button {
+      padding: 10px 20px;
+      margin: 0 10px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .choices button:hover {
+      background-color: #0056b3;
+    }
+
+    .coin {
+      font-size: 80px;
+      margin: 20px 0;
+      transition: transform 0.6s ease;
+    }
+
+    .result {
+      font-size: 24px;
+      margin-top: 20px;
+    }
+
+    .win {
+      color: green;
+    }
+
+    .lose {
+      color: red;
+    }
+
+    .scoreboard {
+      margin-top: 20px;
+      font-size: 18px;
+      background: #eee;
+      padding: 10px 20px;
+      border-radius: 10px;
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-box">
+    <h1>Tanga Uloqtirish</h1>
+    <div class="choices">
+      <button onclick="flip('gerb')">👑 Gerb</button>
+      <button onclick="flip('raqam')">🎲 Raqam</button>
+    </div>
+    <div class="coin" id="coin">🪙</div>
+    <div class="result" id="result">Tanlov qiling...</div>
+    <div class="scoreboard" id="scoreboard">
+      🎯 O‘yinlar: 0 | ✅ Yutuqlar: 0 | ❌ Mag‘lubiyatlar: 0
+    </div>
+  </div>
+
+  <script>
+    let total = 0;
+    let wins = 0;
+    let losses = 0;
+
+    function updateScoreboard() {
+      document.getElementById("scoreboard").innerText =
+        `🎯 O‘yinlar: ${total} | ✅ Yutuqlar: ${wins} | ❌ Mag‘lubiyatlar: ${losses}`;
+    }
+
+    function flip(userChoice) {
+      const coin = document.getElementById("coin");
+      const result = document.getElementById("result");
+
+      // Animatsiya
+      coin.style.transform = "rotateY(720deg)";
+      result.textContent = "Uloqtirilmoqda...";
+      result.className = "result";
+
+      setTimeout(() => {
+        const outcome = Math.random() < 0.5 ? "gerb" : "raqam";
+        coin.textContent = outcome === "gerb" ? "👑" : "🎲";
+
+        total++;
+
+        if (userChoice === outcome) {
+          wins++;
+          result.innerHTML = "✅ Siz yutdingiz! Natija: " + (outcome === "gerb" ? "Gerb 👑" : "Raqam 🎲");
+          result.classList.add("win");
+        } else {
+          losses++;
+          result.innerHTML = "❌ Afsus, siz yutqazdingiz. Natija: " + (outcome === "gerb" ? "Gerb 👑" : "Raqam 🎲");
+          result.classList.add("lose");
+        }
+
+        updateScoreboard();
+        coin.style.transform = "rotateY(0deg)";
+      }, 600);
+    }
+  </script>
+</body>
+</html>
