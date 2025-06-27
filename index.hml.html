@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O'RGATUVCH - The Educator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif,'Times New Roman', Times, serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #4a5568;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4a5568;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .mobile-menu {
+            display: none;
+            cursor: pointer;
+        }
+
+        main {
+            margin-top: 80px;
+            padding: 2rem 0;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .content-section {
+            background: white;
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .content-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .language-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .language-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .language-card:nth-child(2) {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .language-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .language-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .exercise-item {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .exercise-item:hover {
+            background: #e9ecef;
+            transform: translateX(10px);
+        }
+
+        .quiz-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-question {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #4a5568;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 0.5rem;
+        }
+
+        .quiz-option {
+            padding: 1rem;
+            background: #f8f9fa;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            background: #e9ecef;
+            border-color: #667eea;
+        }
+
+        .quiz-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .quiz-option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .language-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .lesson-video {
+            width: 100%;
+            height: 300px;
+            background: #000;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            margin: 1rem 0;
+        }
+
+        .interactive-element {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .interactive-element:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <a href="#" class="logo" onclick="showPage('home')">O'RGATUVCH</a>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showPage('home')" class="active">Home</a></li>
+                <li><a href="#" onclick="showPage('teach')">Teach</a></li>
+                <li><a href="#" onclick="showPage('lessons')">Lessons</a></li>
+                <li><a href="#" onclick="showPage('exercises')">Exercises</a></li>
+                <li><a href="#" onclick="showPage('resources')">Resources</a></li>
+                <li><a href="#" onclick="showPage('forum')">Forum</a></li>
+                <li><a href="#" onclick="showPage('sections')">Sections</a></li>
+                <li><a href="#" onclick="showPage('news')">News</a></li>
+                <li><a href="#" onclick="showPage('contact')">Contact</a></li>
+                <li><a href="#" onclick="showPage('about')">About</a></li>
+            </ul>
+            <div class="mobile-menu">☰</div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <!-- Home Page -->
+        <div id="home" class="page active">
+            <section class="hero">
+                <h1>Welcome to dear students</h1>
+                <p>Your Gateway to Mastering English and Korean Languages</p>
+                <a href="#" class="cta-button" onclick="showPage('teach')">Start Learning Today</a>
+            </section>
+            
+            <div class="language-cards">
+                <div class="language-card" onclick="showPage('lessons')">
+                    <h3>🇺🇸 English</h3>
+                    <p>Master English with interactive lessons, grammar exercises, and pronunciation guides</p>
+                </div>
+                <div class="language-card" onclick="showPage('lessons')">
+                    <h3>🇰🇷 Korean</h3>
+                    <p>Learn Korean from basics to advanced with cultural insights and practical conversations</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teach Page -->
+        <div id="teach" class="page">
+            <div class="content-section">
+                <h2>Interactive Teaching Hub</h2>
+                <p>Welcome to our comprehensive teaching platform designed to make language learning engaging and effective.</p>
+                
+                <div class="lesson-video">
+                    <p>📹 Interactive Video Lesson Player</p>
+                </div>
+                
+                <div class="interactive-element" onclick="toggleContent(this)">
+                    <h3>🎯 Today's Featured Lesson</h3>
+                    <p>Click to expand and start your learning journey!</p>
+                </div>
+                
+                <div class="language-cards">
+                    <div class="language-card">
+                        <h3>Beginner Friendly</h3>
+                        <p>Start from scratch with our step-by-step approach</p>
+                    </div>
+                    <div class="language-card">
+                        <h3>Interactive Exercises</h3>
+                        <p>Practice with real-time feedback and progress tracking</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Lessons Page -->
+        <div id="lessons" class="page">
+            <div class="content-section">
+                <h2>Language Lessons</h2>
+                
+                <div class="language-cards">
+                    <div class="language-card">
+                        <h3>English Lessons</h3>
+                        <ul style="text-align: left; margin-top: 1rem;">
+                            <li>Grammar Fundamentals</li>
+                            <li>Vocabulary Building</li>
+                            <li>Pronunciation Practice</li>
+                            <li>Conversation Skills</li>
+                        </ul>
+                    </div>
+                    <div class="language-card">
+                        <h3>Korean Lessons</h3>
+                        <ul style="text-align: left; margin-top: 1rem;">
+                            <li>Hangul Writing System</li>
+                            <li>Basic Grammar Patterns</li>
+                            <li>Cultural Context</li>
+                            <li>Daily Conversations</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 65%;"></div>
+                </div>
+                <p style="text-align: center; margin-top: 0.5rem;">Your Progress: 65% Complete</p>
+            </div>
+        </div>
+
+        <!-- Exercises Page -->
+        <div id="exercises" class="page">
+            <div class="content-section">
+                <h2>Practice Exercises</h2>
+                
+                <div class="quiz-container">
+                    <h3>Quick Quiz: English Grammar</h3>
+                    <div class="quiz-question">What is the correct form of the verb in this sentence: "She _____ to the store yesterday."</div>
+                    <div class="quiz-options">
+                        <div class="quiz-option" onclick="selectAnswer(this, false)">go</div>
+                        <div class="quiz-option" onclick="selectAnswer(this, false)">goes</div>
+                        <div class="quiz-option" onclick="selectAnswer(this, true)">went</div>
+                        <div class="quiz-option" onclick="selectAnswer(this, false)">going</div>
+                    </div>
+                </div>
+                
+                <div class="exercise-item">
+                    <h4>📝 Writing Exercise</h4>
+                    <p>Describe your daily routine using present tense verbs</p>
+                </div>
+                
+                <div class="exercise-item">
+                    <h4>🎧 Listening Comprehension</h4>
+                    <p>Listen to the audio clip and answer the questions</p>
+                </div>
+                
+                <div class="exercise-item">
+                    <h4>💬 Speaking Practice</h4>
+                    <p>Record yourself introducing yourself in Korean</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resources Page -->
+        <div id="resources" class="page">
+            <div class="content-section">
+                <h2>Learning Resources</h2>
+                
+                <div class="language-cards">
+                    <div class="language-card">
+                        <h3>📚 Books & eBooks</h3>
+                        <p>Curated collection of language learning materials</p>
+                    </div>
+                    <div class="language-card">
+                        <h3>📱 Recommended Apps</h3>
+                        <p>Mobile apps to supplement your learning</p>
+                    </div>
+                    <div class="language-card">
+                        <h3>🎬 Videos & Media</h3>
+                        <p>Educational videos and entertainment content</p>
+                    </div>
+                    <div class="language-card">
+                        <h3>🌐 Online Tools</h3>
+                        <p>Dictionaries, translators, and practice websites</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Forum Page -->
+        <div id="forum" class="page">
+            <div class="content-section">
+                <h2>Community Forum</h2>
+                <p>Connect with fellow language learners, ask questions, and share your progress!</p>
+                
+                <div class="exercise-item">
+                    <h4>💭 Recent Discussions</h4>
+                    <p><strong>User123:</strong> How do I improve my Korean pronunciation?</p>
+                    <small>2 hours ago • 5 replies</small>
+                </div>
+                
+                <div class="exercise-item">
+                    <h4>🗣️ Study Groups</h4>
+                    <p><strong>EnglishClub:</strong> Weekly conversation practice - Tuesdays 7PM</p>
+                    <small>1 day ago • Join now</small>
+                </div>
+                
+                <div class="exercise-item">
+                    <h4>❓ Q&A Section</h4>
+                    <p><strong>Student456:</strong> What's the difference between formal and informal Korean?</p>
+                    <small>3 days ago • 12 replies</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sections Page -->
+        <div id="sections" class="page">
+            <div class="content-section">
+                <h2>Language Sections</h2>
+                
+                <div class="language-cards">
+                    <div class="language-card">
+                        <h3>🇺🇸 English Section</h3>
+                        <p>Comprehensive English learning materials</p>
+                        <ul style="text-align: left; margin-top: 1rem;">
+                            <li>Business English</li>
+                            <li>Academic Writing</li>
+                            <li>IELTS/TOEFL Prep</li>
+                            <li>Conversation Practice</li>
+                        </ul>
+                    </div>
+                    <div class="language-card">
+                        <h3>🇰🇷 Korean Section</h3>
+                        <p>Dedicated Korean language learning hub</p>
+                        <ul style="text-align: left; margin-top: 1rem;">
+                            <li>TOPIK Preparation</li>
+                            <li>K-Culture Integration</li>
+                            <li>Business Korean</li>
+                            <li>Dialect Studies</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- News Page -->
+        <div id="news" class="page">
+            <div class="content-section">
+                <h2>Latest News & Updates</h2>
+                
+                <div class="exercise-item">
+                    <h4>🆕 New Korean Grammar Course Available!</h4>
+                    <p>We've just launched an intensive Korean grammar course covering all TOPIK levels.</p>
+                    <small>Posted 2 days ago</small>
+                </div>
+                
+                <div class="exercise-item">
+                    <h4>📅 Upcoming Live Session</h4>
+                    <p>Join our live English pronunciation workshop this Friday at 3 PM GMT.</p>
+                    <small>Posted 1 week ago</small>
+                </div>
+                
+                <div class="exercise-item">
+                    <h4>🎉 1000+ Students Milestone!</h4>
+                    <p>We're thrilled to announce that O'RGATUVCH now has over 1000 active students!</p>
+                    <small>Posted 2 weeks ago</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Page -->
+        <div id="contact" class="page">
+            <div class="content-section">
+                <h2>Contact Us</h2>
+                
+                <div class="language-cards">
+                    <div class="language-card">
+                        <h3>📧 Email</h3>
+                        <p>IT@orgatuvch.com</p>
+                        <p>jnayimov777@gmail.com</p>
+                    </div>
+                    <div class="language-card">
+                        <h3>📱 Phone</h3>
+                        <p>+998 90 907 91 47</p>
+                        <p>Available 9 AM - 6 PM EST</p>
+                    </div>
+                    <div class="language-card">
+                        <h3>💬 Social Media</h3>
+                        <p>@javohir</p>
+                        <p>Follow us for daily tips!</p>
+                    </div>
+                    <div class="language-card">
+                        <h3>🏢 Office</h3>
+                        <p>45 Education Street</p>
+                        <p>Tashkent City, LC 87</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- About Page -->
+        <div id="about" class="page">
+            <div class="content-section">
+                <h2>About O'RGATUVCH</h2>
+                <p>O'RGATUVCH (The Educator) is a comprehensive language learning platform dedicated to making English and Korean accessible to learners worldwide.</p>
+                
+                <h3>Our Mission</h3>
+                <p>To break down language barriers and create a global community of confident communicators through innovative, interactive, and culturally-aware language education.</p>
+                
+                <h3>What Makes Us Different</h3>
+                <div class="language-cards">
+                    <div class="language-card">
+                        <h4>🎯 Personalized Learning</h4>
+                        <p>Adaptive content that adjusts to your pace and learning style</p>
+                    </div>
+                    <div class="language-card">
+                        <h4>🌟 Cultural Integration</h4>
+                        <p>Learn language through cultural context and real-world applications</p>
+                    </div>
+                    <div class="language-card">
+                        <h4>👥 Community Focus</h4>
+                        <p>Connect with native speakers and fellow learners worldwide</p>
+                    </div>
+                    <div class="language-card">
+                        <h4>🔄 Continuous Innovation</h4>
+                        <p>Regular updates with the latest teaching methodologies</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update navigation
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => link.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function selectAnswer(element, isCorrect) {
+            // Remove previous selections
+            const options = element.parentNode.querySelectorAll('.quiz-option');
+            options.forEach(option => {
+                option.classList.remove('correct', 'incorrect');
+            });
+            
+            // Mark selected answer
+            if (isCorrect) {
+                element.classList.add('correct');
+            } else {
+                element.classList.add('incorrect');
+                // Show correct answer
+                options.forEach(option => {
+                    if (option.textContent === 'went') {
+                        option.classList.add('correct');
+                    }
+                });
+            }
+        }
+
+        function toggleContent(element) {
+            const content = element.nextElementSibling;
+            if (content && content.style.display === 'none') {
+                content.style.display = 'block';
+                element.style.background = 'linear-gradient(135deg, #764ba2, #667eea)';
+            } else if (content) {
+                content.style.display = 'none';
+                element.style.background = 'linear-gradient(135deg, #667eea, #764ba2)';
+            }
+        }
+
+        // Add smooth scrolling effect
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate progress bar
+            setTimeout(() => {
+                const progressBar = document.querySelector('.progress-fill');
+                if (progressBar) {
+                    progressBar.style.width = '65%';
+                }
+            }, 500);
+        });
+
+        // Add scroll effect to header
+        window.addEventListener('scroll', function() {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                header.style.background = 'rgba(255, 255, 255, 0.95)';
+            }
+        });
+    </script>
+</body>
+</html>
