@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <title>Raqamli Puzzle O‘yini</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: linear-gradient(135deg, #d3cce3, #e9e4f0);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    #puzzle {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: repeat(3, 100px);
+      gap: 5px;
+      margin-bottom: 20px;
+    }
+
+    .tile {
+      background-color: #6a5acd;
+      color: white;
+      font-size: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 10px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .empty {
+      background-color: #ccc;
+      cursor: default;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      background: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .win-message {
+      margin-top: 10px;
+      font-size: 20px;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Raqamli Puzzle O‘yini</h1>
+    <div id="puzzle"></div>
+    <button onclick="shuffle()">Qayta Aralashtir</button>
+    <div class="win-message" id="winMessage"></div>
+  </div>
+
+  <script>
+    const puzzle = document.getElementById("puzzle");
+    const winMessage = document.getElementById("winMessage");
+    let tiles = [];
+
+    function createPuzzle() {
+      puzzle.innerHTML = "";
+      tiles.forEach((num, i) => {
+        const tile = document.createElement("div");
+        tile.className = "tile";
+        tile.textContent = num !== 0 ? num : "";
+        if (num === 0) tile.classList.add("empty");
+        tile.addEventListener("click", () => moveTile(i));
+        puzzle.appendChild(tile);
+      });
+    }
+
+    function shuffle() {
+      do {
+        tiles = [...Array(8).keys()].map(n => n + 1);
+        tiles.push(0); // bo‘sh katak
+        tiles.sort(() => Math.random() - 0.5);
+      } while (!isSolvable(tiles));
+      createPuzzle();
+      winMessage.textContent = "";
+    }
+
+    function moveTile(index) {
+      const emptyIndex = tiles.indexOf(0);
+      const validMoves = [index - 1, index + 1, index - 3, index + 3];
+      if (validMoves.includes(emptyIndex) &&
+          Math.abs(Math.floor(index / 3) - Math.floor(emptyIndex / 3)) <= 1 &&
+          Math.abs((index % 3) - (emptyIndex % 3)) <= 1
+      ) {
+        [tiles[index], tiles[emptyIndex]] = [tiles[emptyIndex], tiles[index]];
+        createPuzzle();
+        checkWin();
+      }
+    }
+
+    function checkWin() {
+      const winState = [1,2,3,4,5,6,7,8,0];
+      if (tiles.every((v, i) => v === winState[i])) {
+        winMessage.textContent = "🎉 Tabriklaymiz! Siz yutdingiz!";
+      }
+    }
+
+    function isSolvable(arr) {
+      let inv = 0;
+      for (let i = 0; i < 8; i++) {
+        for (let j = i + 1; j < 9; j++) {
+          if (arr[i] && arr[j] && arr[i] > arr[j]) inv++;
+        }
+      }
+      return inv % 2 === 0;
+    }
+
+    shuffle(); // boshlanishda avtomatik aralashtirish
+  </script>
+</body>
+</html>
